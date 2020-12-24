@@ -4,6 +4,11 @@ Created on Wed Dec 23 20:13:27 2020
 
 """
 ##### IF Conditionals : #############################################
+x=0
+y=100
+if x <= y <= 100: # or yada and kullanmadan bu şekilde de kullanılabiliyor
+    pass
+
 
 ## none string test ##
 x = ""
