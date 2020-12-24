@@ -14,4 +14,4 @@ if x:         # because the only False string is an empty string. # or
     pass
 if x == None: 
     pass
-# meltem değiştirdi
+# meltem değiştirdi yineee
