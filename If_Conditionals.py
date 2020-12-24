@@ -15,3 +15,4 @@ if x:         # because the only False string is an empty string. # or
 if x == None: 
     pass
 # meltem değiştirdi yineee
+# takiii
