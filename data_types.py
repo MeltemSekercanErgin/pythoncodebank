@@ -14,4 +14,3 @@ Created on Wed Dec 23 19:59:42 2020
 # Dictionary
 # Tuple
 # Set
-# Meltem
