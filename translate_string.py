@@ -8,13 +8,14 @@ Created on Sun Dec 27 14:21:44 2020
 # first string
 firstString = "ABcdefgh"    # orjinal
 secondString = "hgfedcbs"   # tranlate
-thirdString = "Bxwq"            # remove orjinal char
+thirdString = "Bxwq"        # remove orjinal char
 
 orj_metin = "abcdef"
 print("Original string:", orj_metin)
 
 translation = orj_metin.maketrans(firstString, secondString, thirdString)
-print(type(translation))
+# thirdString is not required
+print(type(translation))  # ascii char dictionary 
 print(translation)
 # translate string
 print("Translated string:", orj_metin.translate(translation))
