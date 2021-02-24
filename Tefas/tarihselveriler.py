@@ -7,4 +7,5 @@ Created on Mon Feb 22 16:23:07 2021
 
 import pandas as pd
 
-df = pd.read_csv("TarihselVeriler_gd.csv")
+df = pd.read_excel("TarihselVeriler1.xlsx", sheet_name=None)
+

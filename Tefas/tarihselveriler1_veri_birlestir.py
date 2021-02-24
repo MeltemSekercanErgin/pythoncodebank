@@ -13,6 +13,7 @@ Diğer tüm okunan veriler bunun üzerine eklenecek.
 Bunu for döngüsü dışında yaparak for içerisinde bir koşul cümlesinden kurtuluyoruz."""
 df = pd.read_excel("TarihselVeriler1.xlsx")
 
+print(df.columns)
 """ÖZEL FON ve SERBEST kelimelerini içeren fonlar bir kolon üzerinde True olarak işaretleniyor.
 sil kolonu True olanlar dataframeden siliniyor"""
 df["sil"] = df["FON ADI"].apply(lambda x : ("ÖZEL FON" in x) or ("SERBEST" in x))
