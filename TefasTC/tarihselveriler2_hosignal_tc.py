@@ -50,16 +50,15 @@ for i in df["Fon Kodu"].unique():
 
     
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf, linewidth=.80).set_title(i)   # 'AES')
+    plt.savefig('./plots/'+i+'_2020_Ocak.png') # önce kayıt etmek şart, sonra kayıt edince olmuyor...
     plt.show()
-    plt.savefig(i+'_2020_Ocak.png')
     
-    condition4 = tmpdf['Tarih'] >= '01.12.2020'
+    condition4 = tmpdf['Tarih'] >= '12.01.2020'
     tmpdf2 = tmpdf.loc[condition4]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf2, linewidth=.80).set_title(i)   # 'AES')
+    plt.savefig('./plots/'+i+'_2020_Aralik.png')
     plt.show()
-    plt.savefig(i+'_2020_Aralik.png')
-
 
     
    
