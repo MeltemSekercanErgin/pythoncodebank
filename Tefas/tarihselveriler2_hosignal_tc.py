@@ -28,7 +28,7 @@ df = df.loc[condition3]
 
 for i in df["FON KODU"].unique():
     
-    tmpdf = df[df["FON KODU"] == 'AES'] # i ]
+    tmpdf = df[df["FON KODU"] == i ] #'AES']
     #tmpdf["ho5"] = tmpdf["FİYAT"].ewm(span =10).mean()
     tmpdf['TARİH'] = pd.to_datetime(tmpdf['TARİH'], format="%Y-%m-%d")
     tmpdf.sort_values("TARİH", inplace=True)
@@ -45,8 +45,8 @@ for i in df["FON KODU"].unique():
     tmpdf = pd.melt(tmpdf, id_vars=['TARİH'], value_vars=['FİYAT', 'ho14', 'ho21', 'ho30'])
     #tmpdf = pd.melt(tmpdf, id_vars=['TARİH'], value_vars=[ 'ho5', 'ho14', 'ho21', 'ho30'])
     
-    sns.lineplot(x ="TARİH", y = "value", hue="variable", data=tmpdf, linewidth=.80).set_title('AES') #i)
+    sns.lineplot(x ="TARİH", y = "value", hue="variable", data=tmpdf, linewidth=.80).set_title(i)   # 'AES')
     plt.show()
-    break
+    # break
     
    
