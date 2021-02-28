@@ -15,7 +15,7 @@ df = pd.concat([df,df2])"""
 
 
 df = pd.read_csv("TarihselVerilerTC.csv")
-df['Tarih'] = pd.to_datetime(df['Tarih'], format="%d.%m.%Y")
+df["Tarih"] = pd.to_datetime(df["Tarih"], format="%d.%m.%Y")
 df.dropna(inplace=True)
 
 condition3 = df['Tarih'] >= '01.01.2020'
@@ -31,7 +31,7 @@ for i in df["Fon Kodu"].unique():
     
     tmpdf = df[df["Fon Kodu"] == i ]  #'GUH'] # i ] #
     #tmpdf["ho5"] = tmpdf["FİYAT"].ewm(span =10).mean()
-    tmpdf['Tarih'] = pd.to_datetime(tmpdf['Tarih'], format="%d.%m.%Y")
+    tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%d.%m.%Y")
     tmpdf.sort_values("Tarih", inplace=True)
     
     
@@ -50,6 +50,7 @@ for i in df["Fon Kodu"].unique():
 
     
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf, linewidth=.80).set_title(i)   # 'AES')
+    plt.xticks(rotation='vertical')
     plt.savefig('./plots/'+i+'_2020_Ocak.png') # önce kayıt etmek şart, sonra kayıt edince olmuyor...
     plt.show()
     
@@ -57,8 +58,21 @@ for i in df["Fon Kodu"].unique():
     tmpdf2 = tmpdf.loc[condition4]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf2, linewidth=.80).set_title(i)   # 'AES')
+    plt.xticks(rotation='vertical')
     plt.savefig('./plots/'+i+'_2020_Aralik.png')
     plt.show()
+
+
+
+
+    condition5 = tmpdf['Tarih'] >= '02.01.2021'
+    tmpdf3 = tmpdf.loc[condition5]
+
+    sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf3, linewidth=.80).set_title(i)   # 'AES')
+    plt.xticks(rotation='vertical')
+    plt.savefig('./plots/'+i+'_2021_Subat.png')
+    plt.show()
+
 
     
    
