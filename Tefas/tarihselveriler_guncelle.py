@@ -4,6 +4,11 @@ Created on Mon Mar  1 16:20:51 2021
 
 @author: SS
 """
+#TARİH SOruNu VAR
+#TARİH SOruNu VAR
+#TARİH SOruNu VAR
+#TARİH SOruNu VAR
+#TARİH SOruNu VAR
 
 import pandas as pd
 import seaborn as sns
@@ -27,7 +32,9 @@ if len(dfy)>0:
     dfy.drop('sil', axis=1, inplace=True)
     
     df = pd.concat([df, dfy], ignore_index = True)
-        
-    print(len(dfy), " adet kayıt eklandi.")
+    
+    df.to_csv("TarihselVeriler_main.csv", index=False)
+    
+    print(len(dfy), " adet kayıt eklendi.")
 else:
     print("Veri tabanı güncel")
