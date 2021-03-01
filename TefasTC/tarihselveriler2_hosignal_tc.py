@@ -18,7 +18,7 @@ df = pd.read_csv("TarihselVerilerTC.csv")
 df["Tarih"] = pd.to_datetime(df["Tarih"], format="%d.%m.%Y")
 df.dropna(inplace=True)
 
-condition3 = df['Tarih'] >= '01.01.2020'
+condition3 = df['Tarih'] >= '01.01.2020' # AY GÜN YIL ALIYOR
 df = df.loc[condition3]
 
 
@@ -54,7 +54,7 @@ for i in df["Fon Kodu"].unique():
     plt.savefig('./plots/'+i+'_2020_Ocak.png') # önce kayıt etmek şart, sonra kayıt edince olmuyor...
     plt.show()
     
-    condition4 = tmpdf['Tarih'] >= '12.01.2020'
+    condition4 = tmpdf['Tarih'] >= '12.01.2020'  # AY GÜN YIL ALIYOR
     tmpdf2 = tmpdf.loc[condition4]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf2, linewidth=.80).set_title(i)   # 'AES')
@@ -65,7 +65,7 @@ for i in df["Fon Kodu"].unique():
 
 
 
-    condition5 = tmpdf['Tarih'] >= '02.01.2021'
+    condition5 = tmpdf['Tarih'] >= '02.01.2021' # AY GÜN YIL ALIYOR
     tmpdf3 = tmpdf.loc[condition5]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf3, linewidth=.80).set_title(i)   # 'AES')
