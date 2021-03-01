@@ -25,7 +25,7 @@ df.drop(df[df['sil']].index, inplace = True)
   
 """ kalan diğer xlsx dosyaları (ki 2,3,4,5,6 olarak isimlendirilmişlerdi indirirken)
 okuma ve ÖZEL FON ve SERBEST içerenlerin silinmesi işlemi yapılıyor."""
-for i in range(2019,2021):
+for i in range(2017,2021):
     df2 = pd.read_excel("TakasbankTEFASTarihselVeriler" + str(i) +".xlsx", sheet_name='Sheet1', header=1)
     df2["sil"] = df2['Fon Adı'].apply(lambda x : ("ÖZEL FON" in x) or ("SERBEST" in x))
     df2.drop(df2[df2['sil']].index, inplace = True) 
