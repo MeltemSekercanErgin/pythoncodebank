@@ -21,10 +21,10 @@ df.dropna(inplace=True)
 condition3 = df['Tarih'] >= '01.01.2020' # AY GÜN YIL ALIYOR
 df = df.loc[condition3]
 
-
-
-
 # 'HYF' YENİ PARAPİYASASI FONU İLK AYI TAKİP EDİLECEK
+# 'FIL' ESKİ PERFORMANSLI PARA PİYASASI FONU 5YIL ORT %20 (MIN%11)
+# 'TGE' İŞ PORTFÖY YABANCI EMTIA FONU METAL ENERJİ PETROL DOĞALGAZ FONU
+# 'AFO' AK PORTFÖY ALTIN FONU : %90 KAMU KİRA SERTİFİKASINA DÖNMÜŞ. 5YILLIK ORT %44
 
 
 for i in df["Fon Kodu"].unique():
