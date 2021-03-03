@@ -33,7 +33,7 @@ if len(dfy)>0:
     
     df = pd.concat([df, dfy], ignore_index = True)
     
-    df.to_csv("TarihselVeriler_main.csv", index=False)
+    df.to_csv("TarihselVeriler_main1.csv", index=False)
     
     print(len(dfy), " adet kayıt eklendi.")
 else:
