@@ -84,7 +84,7 @@ for i in df["Fon Kodu"].unique():
 
 
 
-    condition5 = tmpdf['Tarih'] >= '2020-02-01' #  YIL AY GÜN ALIYOR
+    condition5 = tmpdf['Tarih'] >= '2021-02-01' #  YIL AY GÜN ALIYOR
     tmpdf3 = tmpdf.loc[condition5]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf3, linewidth=.80).set_title(i)   # 'AES')
