@@ -15,10 +15,10 @@ df = pd.concat([df,df2])"""
 
 
 df = pd.read_csv("TarihselVerilerTC.csv")
-df["Tarih"] = pd.to_datetime(df["Tarih"], format="%d.%m.%Y")
+df["Tarih"] = pd.to_datetime(df["Tarih"], format="%Y-%m-%d")
 df.dropna(inplace=True)
 
-condition3 = df['Tarih'] >= '01.01.2020' # AY GÜN YIL ALIYOR
+condition3 = df['Tarih'] >= '2017-01-01' # YIL  AY GÜN ALIYOR
 df = df.loc[condition3]
 
 # 'HYV' HEDEF PORTFÖY PARA PIYASASI FONU YENİ PARAPİYASASI FONU İLK AYI TAKİP EDİLECEK
@@ -44,7 +44,7 @@ for i in df["Fon Kodu"].unique():
     
     tmpdf = df[df["Fon Kodu"] == i ]  #'GUH'] # i ] #
     #tmpdf["ho5"] = tmpdf["FİYAT"].ewm(span =10).mean()
-    tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%d.%m.%Y")
+    tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%Y-%m-%d")
     tmpdf.sort_values("Tarih", inplace=True)
     
     
@@ -60,14 +60,20 @@ for i in df["Fon Kodu"].unique():
     
     tmpdf = pd.melt(tmpdf, id_vars=['Tarih'], value_vars=['Fiyat', 'ho30', 'ho50', 'ho200'])
 
-
-    
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf, linewidth=.80).set_title(i)   # 'AES')
+    plt.xticks(rotation='vertical')
+    plt.savefig('./plots/'+i+'_2016_Ocak.png') # önce kayıt etmek şart, sonra kayıt edince olmuyor...
+    plt.show()
+
+    condition35 = tmpdf['Tarih'] >= '2020-01-01'  #  YIL AY GÜN ALIYOR
+    tmpdf2 = tmpdf.loc[condition35]
+    
+    sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf2, linewidth=.80).set_title(i)   # 'AES')
     plt.xticks(rotation='vertical')
     plt.savefig('./plots/'+i+'_2020_Ocak.png') # önce kayıt etmek şart, sonra kayıt edince olmuyor...
     plt.show()
     
-    condition4 = tmpdf['Tarih'] >= '12.01.2020'  # AY GÜN YIL ALIYOR
+    condition4 = tmpdf['Tarih'] >= '2020-12-01'  #  YIL AY GÜN ALIYOR
     tmpdf2 = tmpdf.loc[condition4]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf2, linewidth=.80).set_title(i)   # 'AES')
@@ -78,7 +84,7 @@ for i in df["Fon Kodu"].unique():
 
 
 
-    condition5 = tmpdf['Tarih'] >= '02.01.2021' # AY GÜN YIL ALIYOR
+    condition5 = tmpdf['Tarih'] >= '2021-02-01' #  YIL AY GÜN ALIYOR
     tmpdf3 = tmpdf.loc[condition5]
 
     sns.lineplot(x ="Tarih", y = "value", hue="variable", data=tmpdf3, linewidth=.80).set_title(i)   # 'AES')
