@@ -43,9 +43,12 @@ class Ui_frmFonIzle(object):
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
-        self.listView_2 = QtWidgets.QListView(self.tab_2)
-        self.listView_2.setGeometry(QtCore.QRect(10, 10, 911, 381))
-        self.listView_2.setObjectName("listView_2")
+        self.verticalLayoutWidget1 = QtWidgets.QWidget(self.tab_2)
+        self.verticalLayoutWidget1.setGeometry(QtCore.QRect(10, 10, 921, 391))
+        self.verticalLayoutWidget1.setObjectName("verticalLayoutWidget1")
+        self.verticalLayoutTrend = QtWidgets.QVBoxLayout(self.verticalLayoutWidget1)
+        self.verticalLayoutTrend.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayoutTrend.setObjectName("verticalLayoutTrend")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -103,7 +106,7 @@ class Ui_frmFonIzle(object):
         self.tabWidget.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(frmFonIzle)
         
-        self.btnBirlestir.clicked.connect(self.veribirlestir)
+        self.btnBirlestir.clicked.connect(self.veri_birlestir)
         self.btnYukle.clicked.connect(self.veriYukle)
         
         self.btnFonAnaliz.clicked.connect(self.fonAnaliz)
@@ -126,8 +129,8 @@ class Ui_frmFonIzle(object):
         self.label_2.setText(_translate("frmFonIzle", "Hareketli Ortalama Periyotları"))
         self.label.setText(_translate("frmFonIzle", "Tarih Aralığı"))
     
-    def veribirlestir(self):
-        tveri.veribirlestir
+    def veri_birlestir(self):
+        tveri.veribirlestir()
         
         now = datetime.now()
         self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + now.strftime("%H:%M:%S") + "    Veriler birleştirildi.\n")
@@ -181,13 +184,21 @@ class Ui_frmFonIzle(object):
         self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + now.strftime("%H:%M:%S") + "    " + fon + " fonu analiz edildi.\n")
         
         
-        
+        """Fon Grafiği"""
         self.fig = tveri.fonGrafik(fon , fondf, tarih1, tarih2)
         self.canvas = FigureCanvas(self.fig)
         
         if self.verticalLayout.count()>0 :
             self.verticalLayout.itemAt(0).widget().deleteLater()
         self.verticalLayout.addWidget(self.canvas)
+        
+        """Trend Grafiği"""
+        self.fig1 = tveri.fonTrend(fon , fondf, tarih1, tarih2)
+        self.canvas1 = FigureCanvas(self.fig1)
+        
+        if self.verticalLayoutTrend.count()>0 :
+            self.verticalLayoutTrend.itemAt(0).widget().deleteLater()
+        self.verticalLayoutTrend.addWidget(self.canvas1)
         
     
 if __name__ == "__main__":

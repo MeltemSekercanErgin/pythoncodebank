@@ -9,32 +9,40 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 from datetime import date
+from statsmodels.tsa.seasonal import STL
 
 
 def veribirlestir():
     
-    df = pd.read_excel("TakasbankTEFASTarihselVeriler2021.xlsx", sheet_name='Sheet1', header=1)
+    df = pd.read_csv("TarihselVeriler_main.csv")
+    df["Tarih"] = pd.to_datetime(df["Tarih"], format="%Y.%m.%d")
     df.dropna(inplace=True)
     
+    SonTarih = df["Tarih"].max()
     
-    df["sil"] = df['Fon Adı'].apply(lambda x : ("ÖZEL FON" in x) or ("SERBEST" in x))
-    df.drop(df[df['sil']].index, inplace = True) 
-      
-    for i in range(2017,2021):
-        df2 = pd.read_excel("TakasbankTEFASTarihselVeriler" + str(i) +".xlsx", sheet_name='Sheet1', header=1)
-        df2["sil"] = df2['Fon Adı'].apply(lambda x : ("ÖZEL FON" in x) or ("SERBEST" in x))
-        df2.drop(df2[df2['sil']].index, inplace = True) 
+    
+    dfy = pd.read_csv("TarihselVeriler.csv")
+    dfy["Tarih"] = pd.to_datetime(dfy["Tarih"], format="%d.%m.%Y")
+    dfy.dropna(inplace=True)
+    
+    dfy = dfy[dfy["Tarih"]>SonTarih]
+    
+    
+    if len(dfy)>0:
+        dfy["sil"] = dfy['Fon Adı'].apply(lambda x : ("ÖZEL FON" in x) or ("SERBEST" in x))
+        dfy.drop(dfy[dfy['sil']].index, inplace = True) 
+        dfy.drop('sil', axis=1, inplace=True)
         
-        df = pd.concat([df, df2], ignore_index = True)
+        df = pd.concat([df, dfy], ignore_index = True)
         
-    df.drop('sil', axis=1, inplace=True)
-   
-    df.to_csv("TarihselVeriler_main.csv", index=False)
+        df.to_csv("TarihselVeriler_main.csv", index=False)
+    
     
     
 def veriYukle():
+    
     df = pd.read_csv("TarihselVeriler_main.csv")
-    df["Tarih"] = pd.to_datetime(df["Tarih"], format="%d.%m.%Y")
+    df["Tarih"] = pd.to_datetime(df["Tarih"], format="%Y.%m.%d")
     df.dropna(inplace=True)
     return df
 
@@ -45,7 +53,12 @@ def fonAnaliz(fon_kod, df, Baslangic, Bitis, HO1 = 30, HO2 = 50, HO3 = 200):
     tmpdf = df[df["Fon Kodu"] == fon_kod ]  
     tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%d.%m.%Y")
     tmpdf.sort_values("Tarih", inplace=True)
-
+    
+    
+    tmpdf["Fiyat"]= tmpdf["Fiyat"].apply(lambda x: str(x).replace(",","."))
+    tmpdf["Fiyat"] = pd.to_numeric(tmpdf["Fiyat"], downcast="float")
+    
+    
     tmpdf["ho30"] = tmpdf["Fiyat"].rolling(window =HO1).mean()
     tmpdf["ho50"] = tmpdf["Fiyat"].rolling(window =HO2).mean()
     tmpdf["ho200"] = tmpdf["Fiyat"].rolling(window =HO3).mean()
@@ -94,7 +107,29 @@ def fonGrafik(fon_kod, df, Baslangic, Bitis):
     
     return fig
 
-   
+def fonTrend(fon_kod, df, Baslangic, Bitis):
+    
+    tmpdf = df.copy()
+    
+    tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%Y.%m.%d")
+    tmpdf.sort_values("Tarih", inplace=True)
+    
+    tmpdf = tmpdf[["Tarih", "Fiyat"]]
+    
+    tmpdf["Fiyat"]= tmpdf["Fiyat"].apply(lambda x: str(x).replace(",","."))
+    tmpdf["Fiyat"] = pd.to_numeric(tmpdf["Fiyat"], downcast="float")
+        
+    tmpdf.set_index('Tarih', inplace=True)
+    
+    
+    res = STL(tmpdf, period=30, ).fit()
+    plt.xticks(rotation='vertical')
+    
+    fig1 = res.plot()
+    
+    
+    
+    return fig1
     
     
    
