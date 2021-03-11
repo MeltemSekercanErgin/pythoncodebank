@@ -14,22 +14,22 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib import pyplot as plt
 
 
-class Ui_frmFonIzle(object):
+class Ui_frmFonIzle():
     def setupUi(self, frmFonIzle):
         frmFonIzle.setObjectName("frmFonIzle")
         frmFonIzle.resize(961, 552)
         self.btnBirlestir = QtWidgets.QPushButton(frmFonIzle)
-        self.btnBirlestir.setGeometry(QtCore.QRect(10, 10, 91, 23))
+        self.btnBirlestir.setGeometry(QtCore.QRect(10, 30, 91, 23))
         self.btnBirlestir.setObjectName("btnBirlestir")
         self.btnYukle = QtWidgets.QPushButton(frmFonIzle)
-        self.btnYukle.setGeometry(QtCore.QRect(110, 10, 91, 23))
+        self.btnYukle.setGeometry(QtCore.QRect(110, 30, 91, 23))
         self.btnYukle.setObjectName("btnYukle")
         
         self.cmbFon = QtWidgets.QComboBox(frmFonIzle)
-        self.cmbFon.setGeometry(QtCore.QRect(330, 10, 491, 22))
+        self.cmbFon.setGeometry(QtCore.QRect(330, 30, 491, 22))
         self.cmbFon.setObjectName("cmbFon")
         self.btnFonAnaliz = QtWidgets.QPushButton(frmFonIzle)
-        self.btnFonAnaliz.setGeometry(QtCore.QRect(830, 10, 121, 23))
+        self.btnFonAnaliz.setGeometry(QtCore.QRect(830, 30, 121, 23))
         self.btnFonAnaliz.setObjectName("btnFonAnaliz")
         
         self.tabWidget = QtWidgets.QTabWidget(frmFonIzle)
@@ -66,7 +66,7 @@ class Ui_frmFonIzle(object):
         self.txtOzet.setObjectName("plainTextEdit")
         self.tabWidget.addTab(self.tab_4, "")
         self.groupBox = QtWidgets.QGroupBox(frmFonIzle)
-        self.groupBox.setGeometry(QtCore.QRect(10, 40, 941, 51))
+        self.groupBox.setGeometry(QtCore.QRect(10, 60, 941, 51))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         
