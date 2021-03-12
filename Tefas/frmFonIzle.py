@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 class Ui_frmFonIzle():
     def setupUi(self, frmFonIzle):
         frmFonIzle.setObjectName("frmFonIzle")
-        frmFonIzle.resize(961, 552)
+        frmFonIzle.resize(961, 752)
         self.btnBirlestir = QtWidgets.QPushButton(frmFonIzle)
         self.btnBirlestir.setGeometry(QtCore.QRect(10, 30, 91, 23))
         self.btnBirlestir.setObjectName("btnBirlestir")
@@ -33,7 +33,7 @@ class Ui_frmFonIzle():
         self.btnFonAnaliz.setObjectName("btnFonAnaliz")
         
         self.tabWidget = QtWidgets.QTabWidget(frmFonIzle)
-        self.tabWidget.setGeometry(QtCore.QRect(10, 110, 941, 431))
+        self.tabWidget.setGeometry(QtCore.QRect(10, 110, 941, 731))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -53,7 +53,7 @@ class Ui_frmFonIzle():
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.tab_3)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 921, 391))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 821, 601))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
