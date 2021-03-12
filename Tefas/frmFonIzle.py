@@ -145,6 +145,7 @@ class Ui_frmFonIzle():
         now = datetime.now()
         self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + now.strftime("%H:%M:%S") + "    Veriler yüklendi.\n")
         
+        
     
     def fonAnaliz(self):
         fon = self.cmbFon.currentText()[0:3]

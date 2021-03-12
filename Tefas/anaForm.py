@@ -8,7 +8,7 @@ Created on Wed Mar 10 12:13:32 2021
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QAction, QMdiSubWindow, QTextEdit
 import sys
 import frmFonIzle
-
+from copy import copy
 
 class MDIWindow(QMainWindow):
 
@@ -32,7 +32,10 @@ class MDIWindow(QMainWindow):
         mnuFon.triggered[QAction].connect(self.WindowTrig)
         mnuSecenekler.triggered[QAction].connect(self.WindowTrig)
         self.setWindowTitle("MDI Application")
-
+        
+        global win_subwindow1
+        win_subwindow1 = list()
+        
     def WindowTrig(self, p):
         
 
@@ -40,9 +43,13 @@ class MDIWindow(QMainWindow):
             
             MDIWindow.count = MDIWindow.count + 1
             sub = QMdiSubWindow()
-            self.win_subwindow = frmFonIzle.Ui_frmFonIzle()
-            self.win_subwindow.setupUi(sub)
-    
+            
+            myForm = copy(frmFonIzle.Ui_frmFonIzle())
+            
+            win_subwindow1.append( myForm)
+            win_subwindow1[-1].setupUi(sub)
+            
+            sub.setObjectName("Load_Input_window" + str(MDIWindow.count))
             self.mdi.addSubWindow(sub)
             sub.move(1, 1)
             sub.show()
