@@ -2,13 +2,15 @@
 """
 Created on Wed Mar 10 12:13:32 2021
 
-@author: SS
+@author: Meltem ERGİN :)
 """
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QAction, QMdiSubWindow, QTextEdit
 import sys
 import frmFonIzle
+import frmTumFonAnaliz
 from copy import copy
+
 
 class MDIWindow(QMainWindow):
 
@@ -23,49 +25,85 @@ class MDIWindow(QMainWindow):
     
             self.mnuSecenekler = self.bar.addMenu("Dosya")
             self.mnuSecenekler.addAction("Kapat")
+            self.mnuSecenekler.addSeparator()
             #mnuSecenekler.addAction("Formları Diz")
             
             
             
             self.mnuFon = self.bar.addMenu("Fon")
             self.mnuFon.addAction("Fon İzleme")
+            self.mnuFon.addAction("Tüm Fonlar İzleme")
             
             self.mnuFon.triggered[QAction].connect(self.WindowTrig)
             self.mnuSecenekler.triggered[QAction].connect(self.WindowTrig)
             self.setWindowTitle("MDI Application")
             
+            
             global win_subwindow1
             win_subwindow1 = list()
-        
+            
+            global sub
+            sub = list()
+            
         except BaseException as e:
             
             print("Bir Hata Oluştu : ", e)
+            
+    def closeEvent(self, event):
+        #print("ana form kapat")
+        event.accept()
         
+    
     def WindowTrig(self, p):
         try :
 
-            if p.text() == "Fon İzleme":
+            if p.text() == "Tüm Fonlar İzleme":
                 
                 MDIWindow.count = MDIWindow.count + 1
-                sub = QMdiSubWindow()
+                sub.append( QMdiSubWindow())
+                
+                myForm = copy(frmTumFonAnaliz.Ui_frmTumFonAnaliz())
+                
+                win_subwindow1.append( myForm)
+                win_subwindow1[-1].setupUi(sub[-1])
+                
+                strTitle = "Tüm Fonlar İzleme " + str(MDIWindow.count)
+                sub[-1].setObjectName(strTitle)
+                sub[-1].setWindowTitle(strTitle)
+                
+                
+
+                self.mdi.addSubWindow(sub[-1])
+                sub[-1].move(1, 1)
+                sub[-1].show()
+                
+                myMnu = self.mnuSecenekler.addAction(strTitle)
+                
+                sub[-1].closeEvent = lambda x: self.Kapa(x, strTitle, myMnu)
+                
+            elif p.text() == "Fon İzleme":
+                
+                MDIWindow.count = MDIWindow.count + 1
+                sub.append( QMdiSubWindow())
                 
                 myForm = copy(frmFonIzle.Ui_frmFonIzle())
                 
                 win_subwindow1.append( myForm)
-                win_subwindow1[-1].setupUi(sub)
+                win_subwindow1[-1].setupUi(sub[-1])
                 
-                sub.setObjectName("Fon İzleme " + str(MDIWindow.count))
-                sub.setWindowTitle("Fon İzleme " + str(MDIWindow.count))
+                strTitle = "Fon İzleme " + str(MDIWindow.count)
+                sub[-1].setObjectName(strTitle)
+                sub[-1].setWindowTitle(strTitle)
                 
                 
 
-                self.mdi.addSubWindow(sub)
-                sub.move(1, 1)
-                sub.show()
+                self.mdi.addSubWindow(sub[-1])
+                sub[-1].move(1, 1)
+                sub[-1].show()
                 
-                self.mnuSecenekler.addAction("Fon İzleme " + str(MDIWindow.count))
+                myMnu = self.mnuSecenekler.addAction(strTitle)
                 
-                sub.windowStateChanged.connect(self.formKapa)
+                sub[-1].closeEvent = lambda x: self.Kapa(x, strTitle, myMnu)
                 
                 
             elif p.text() == "Kapat":
@@ -84,9 +122,10 @@ class MDIWindow(QMainWindow):
             
             print("Bir Hata Oluştu : ", e)
             
-    def formKapa(p,q):
-        #print("kapatma işlemi için ...")
-        pass
+    def Kapa(self,event , subName, myMenu):
+        
+        self.mnuSecenekler.removeAction(myMenu)
+        
         
 app = QApplication(sys.argv)
 mdi  =MDIWindow()

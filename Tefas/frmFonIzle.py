@@ -137,6 +137,7 @@ class Ui_frmFonIzle():
             
             print("Bir Hata Oluştu : ", e)
             
+    
             
     def veri_birlestir(self):
         try :

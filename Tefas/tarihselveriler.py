@@ -2,7 +2,7 @@
 """
 Created on Fri Feb 26 11:51:31 2021
 
-@author: SS
+@author: Meltem ERGİN :)
 """
 import pandas as pd
 import numpy as np
@@ -81,7 +81,10 @@ def fonAnaliz(fon_kod, df, Baslangic, Bitis, HO1 = 30, HO2 = 50, HO3 = 200):
         tmpdf["BUY"] = tmpdf["BUY"].astype(int)
         tmpdf["SELL"] = tmpdf["SELL"].astype(int)
         
-    
+        tmpdf["UP"] = ( (tmpdf["ho30"] > tmpdf["ho50"] ) & (tmpdf["ho30"] > tmpdf["ho200"] ) )
+        tmpdf["DOWN"] = ( (tmpdf["ho30"] < tmpdf["ho50"] )  & (tmpdf["ho30"] < tmpdf["ho200"] )  )
+        
+        
        
     
         condition1 = tmpdf['Tarih'] >= Baslangic 
