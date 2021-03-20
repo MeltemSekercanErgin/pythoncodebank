@@ -155,4 +155,5 @@ def fonTrend(fon_kod, df):
     
     return fig1
     
-   
+
+    

@@ -1,0 +1,2 @@
+x_test,y_test,y_pred,GerçekFark,TahminFark,Gerçek,Tahmin,Ongoru,Skor,mean_squared_error
+1.02141,1.021808,1.0209197,0.00039803982,-0.0004903078,True,False,False,,0.0008883476
