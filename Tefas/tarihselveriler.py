@@ -29,7 +29,7 @@ def hatayakala(function):
     return wrap_function
 
 
-@hatayakala
+#@hatayakala
 def veribirlestir():
 
     df = pd.read_csv("TarihselVeriler_main.csv")
@@ -43,6 +43,8 @@ def veribirlestir():
     dfy["Tarih"] = pd.to_datetime(dfy["Tarih"], format="%d.%m.%Y")
     dfy.dropna(inplace=True)
     
+    dfy["nxFiyat"] = 0
+    
     dfy = dfy[dfy["Tarih"]>SonTarih]
     
     
@@ -53,8 +55,46 @@ def veribirlestir():
         
         df = pd.concat([df, dfy], ignore_index = True)
         
-        df.to_csv("TarihselVeriler_main.csv", index=False)
+        
+    """ BEGIN - Tahmin için eklendi"""
+    df["Fiyat"]= df["Fiyat"].apply(lambda x: str(x).replace(",","."))
+    df["Fiyat"] = pd.to_numeric(df["Fiyat"], downcast="float")
+        
+    dfy["Fiyat"]= dfy["Fiyat"].apply(lambda x: str(x).replace(",","."))
+    dfy["Fiyat"] = pd.to_numeric(dfy["Fiyat"], downcast="float")
+    
+    
+    tmpdf = pd.DataFrame()
+    
+    for fon in df["Fon Kodu"].unique():
+        
+        fdf = df[df["Fon Kodu"] == fon ] 
+        
+        fdf["ho_short"] = fdf["Fiyat"].rolling(window =30).mean()
+        fdf["ho_middle"] = fdf["Fiyat"].rolling(window =50).mean()
+        fdf["ho_long"] = fdf["Fiyat"].rolling(window =200).mean()
+        
+        tmpdf = pd.concat([tmpdf, fdf], ignore_index = True)
+        
+    
+    df = tmpdf.copy()
+    #df["nxFiyat"] = 0 #ilk çalıştırmada kullanıldı
+    for index, row in df.iterrows():
+        
+        if row["nxFiyat"]==0:
+        
+            Tarih = df[df["Tarih"] > row["Tarih"] ]["Tarih"].min()
+            
+            Fiyat = df[(df["Tarih"] == Tarih) & (df["Fon Kodu"]==row["Fon Kodu"]) ]["Fiyat"].mean()
+            
+            df.loc[index, "nxFiyat"] = Fiyat
+            
+            print(row["Fiyat"], "  ", Fiyat)
+        
+    """ END - Tahmin için eklendi"""
 
+    df.to_csv("TarihselVeriler_main.csv", index=False)
+    
 @hatayakala   
 def veriYukle():
 
@@ -77,9 +117,11 @@ def fonAnaliz(fon_kod, df, Baslangic, Bitis, HO1 = 30, HO2 = 50, HO3 = 200):
     tmpdf["Fiyat"] = pd.to_numeric(tmpdf["Fiyat"], downcast="float")
     
     
+    #veri birleştirilirken sabit oluşturuldu. Bu onları ekrandan alınana göre tekrar hesaplıyor
     tmpdf["ho_short"] = tmpdf["Fiyat"].rolling(window =HO1).mean()
     tmpdf["ho_middle"] = tmpdf["Fiyat"].rolling(window =HO2).mean()
     tmpdf["ho_long"] = tmpdf["Fiyat"].rolling(window =HO3).mean()
+    
     
     tmpdf["SELLs"] =  tmpdf["Fiyat"]<tmpdf["ho_short"] 
     tmpdf["BUYs"] = tmpdf["Fiyat"]>tmpdf["ho_long"] 

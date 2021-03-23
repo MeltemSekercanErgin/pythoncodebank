@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import date, datetime
 import tarihselveriler as tveri
 import pandas as pd
-
+from tahmin import fon_LinearRegression, verihazirla
 
 
 class Ui_frmTumFonAnaliz():
@@ -43,6 +43,12 @@ class Ui_frmTumFonAnaliz():
         self.lstKazanc.setGeometry(QtCore.QRect(10, 10, 1270, 505))
         self.lstKazanc.setObjectName("listView2")
         self.tabWidget.addTab(self.tab_3, "")
+        self.tab_5 = QtWidgets.QWidget()
+        self.tab_5.setObjectName("tab_5")
+        self.lstTahmin = QtWidgets.QListWidget(self.tab_5)
+        self.lstTahmin.setGeometry(QtCore.QRect(10, 10, 1270, 505))
+        self.lstTahmin.setObjectName("listView3")
+        self.tabWidget.addTab(self.tab_5, "")
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.txtOzet = QtWidgets.QPlainTextEdit(self.tab_4)
@@ -92,7 +98,7 @@ class Ui_frmTumFonAnaliz():
         
         
         self.retranslateUi(frmTumFonAnaliz)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(frmTumFonAnaliz)
         
         
@@ -111,6 +117,7 @@ class Ui_frmTumFonAnaliz():
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("frmTumFonAnaliz", "Al Sat Sinyalleri"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("frmTumFonAnaliz", "Trendler"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("frmTumFonAnaliz", "Kazanç"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("frmTumFonAnaliz", "Tahmin"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("frmTumFonAnaliz", "İşlem Özeti"))
         self.label_2.setText(_translate("frmTumFonAnaliz", "Hareketli Ortalama Periyotları"))
         self.label.setText(_translate("frmTumFonAnaliz", "Tarih Aralığı"))
@@ -172,6 +179,30 @@ class Ui_frmTumFonAnaliz():
             self.lstKazanc.addItem( eleman )
             self.lstKazanc.item(self.lstKazanc.count() - 1).setBackground(QtGui.QColor(renk))
         
+        
+        
+            """Tahmin"""
+            mydf = verihazirla(mydf)
+            mydf.sort_values("Tarih", ascending=False,  inplace=True)
+            
+            if len(mydf)>0:
+                x = mydf[["Fiyat", "ho_short", "ho_middle", "ho_long"]].head(1)
+                print(x)
+                y_pred = fon_LinearRegression(fon, x)
+                eleman =   fon + "     Son Fiyat = " +  str("{:.5f}".format(SonFiyat)) + "     Tahmin Edilen Fiyat = " +  str(y_pred)
+                """if row["BUY"] == 1:
+                    eleman += "   AL"
+                    renk = "#00BF00"
+                else:
+                    eleman += "   SAT"
+                    renk = "#FF0000"
+                """
+                self.lstTahmin.addItem( eleman )
+                print(y_pred)
+                #self.lstAlSat.item(self.lstAlSat.count() - 1).setBackground(QtGui.QColor(renk))
+        
+        
+        
         """------------------------"""
             
         """ YÜKSELİŞ ALÇALIŞ TRENDLERİ"""            
@@ -215,7 +246,9 @@ class Ui_frmTumFonAnaliz():
                 renk = "#FF0000"
             self.lstAlSat.addItem( eleman )
             self.lstAlSat.item(self.lstAlSat.count() - 1).setBackground(QtGui.QColor(renk))
-        """------------------------"""
+            """------------------------"""
+        
+         
             
         now = datetime.now()
         self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + now.strftime("%H:%M:%S") + "    Tüm fonlar analiz edildi.\n")

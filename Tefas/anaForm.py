@@ -55,7 +55,7 @@ class MDIWindow(QMainWindow):
         
         event.accept()"""
         
-    @tveri.hatayakala
+    #@tveri.hatayakala
     def WindowTrig(self, p):
    
 

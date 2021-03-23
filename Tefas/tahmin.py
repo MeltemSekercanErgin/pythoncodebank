@@ -17,6 +17,7 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
+#veribirleştirme kısmında yapıldığından kullanılmayacak
 def verihazirla_ilk():
     
     df = pd.read_csv("TarihselVeriler_main.csv")
@@ -36,16 +37,15 @@ def verihazirla_ilk():
         
         Fiyat = df[(df["Tarih"] == Tarih) & (df["Fon Kodu"]==row["Fon Kodu"]) ]["Fiyat"].mean()
         
-        """ içinde bulunduğumuz kaydın şimdiki fiyatından bulduğumuz bir önceki fiyatı çıkarıp
-        bulunduğumuz satırın fark kolonuna yazıyoruz"""
         df.loc[index, "nxFiyat"] = Fiyat
         
         print(row["Fiyat"], "  ", Fiyat)
         
         
     df.to_csv("Tahmin.csv", index=False)
-    
-def verihazirla():
+
+#veribirleştirme kısmında yapıldığından kullanılmayacak
+def verihazirla_2():
     
     df = pd.read_csv("Tahmin.csv")
     
@@ -81,6 +81,17 @@ def verihazirla():
     
     tmpdf.to_csv("Tahmin_h.csv", index=False)
     
+def verihazirla(df):
+    
+    """Son fiyatı sıfır olanlar varsa sil"""
+    
+    df = df[df["Fiyat"]>0]
+    df = df[df["nxFiyat"]>0]
+    df = df[df["ho_short"]>0]
+    df = df[df["ho_middle"]>0]
+    df = df[df["ho_long"]>0]
+    
+    return df
 
 def lr_model_egit():
     
@@ -283,7 +294,25 @@ def ann_model_egit():
         print("Tahmin Skoru : " , model.score(x_test, y_test))
         fondf.to_csv("tahminler\_ann_" + fon + ".csv", index=False)
         
-        
+def grafik_LinearRegression(fon, fondf):
+    
+    x = fondf[["Fiyat", "ho_short", "ho_middle", "ho_long"]]
+    
+    
+    fondf["y_pred"] = fon_LinearRegression(fon, x)
+    
+    
+    fondf = pd.melt(fondf, id_vars=['Tarih'], value_vars=['Fiyat', 'y_pred'])
+
+    fig, ax = plt.subplots()
+    
+    sns.lineplot(ax = ax, x ="Tarih", y = "value", hue="variable", data=fondf)
+    plt.title(fon)
+    
+    plt.xticks(rotation='vertical')
+    
+    return fig
+    
 def fon_LinearRegression(fon, x):
     """ x  için gönderilmesi gereken değerlerin örneği
     x = fdf[["Fiyat", "ho_short", "ho_middle", "ho_long"]]
@@ -296,7 +325,8 @@ def fon_LinearRegression(fon, x):
     return y_pred
     
 
-
+"""
 x_deg = pd.DataFrame([[1.36,1.55,1.49,1.557]]) #"Fiyat", "ho_short", "ho_middle", "ho_long"
 y_pred = fon_LinearRegression("ZPK", x_deg)
 print("ZPK Tahmin Edilen Ertesi Gün Fiyatı : ", y_pred)
+"""

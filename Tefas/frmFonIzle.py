@@ -13,6 +13,8 @@ import pandas as pd
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib import pyplot as plt
 
+from tahmin import fon_LinearRegression, verihazirla, grafik_LinearRegression
+
 
 class Ui_frmFonIzle():
     @tveri.hatayakala
@@ -58,6 +60,18 @@ class Ui_frmFonIzle():
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tabWidget.addTab(self.tab_3, "")
+        
+        self.tab_5 = QtWidgets.QWidget()
+        self.tab_5.setObjectName("tab_5")
+        self.verticalLayoutWidget2 = QtWidgets.QWidget(self.tab_5)
+        self.verticalLayoutWidget2.setGeometry(QtCore.QRect(0, 0, 1270, 505))
+        self.verticalLayoutWidget2.setObjectName("verticalLayoutWidget2")
+        self.verticalLayoutTahmin = QtWidgets.QVBoxLayout(self.verticalLayoutWidget2)
+        self.verticalLayoutTahmin.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayoutTahmin.setObjectName("verticalLayoutTahmin")
+        self.tabWidget.addTab(self.tab_5, "")
+        
+        
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.txtOzet = QtWidgets.QPlainTextEdit(self.tab_4)
@@ -102,7 +116,7 @@ class Ui_frmFonIzle():
         self.txtHO3.setText("200")
         
         self.retranslateUi(frmFonIzle)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(frmFonIzle)
         
         self.btnFonAnaliz.clicked.connect(self.fonAnaliz)
@@ -120,6 +134,8 @@ class Ui_frmFonIzle():
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("frmFonIzle", "Trendler"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("frmFonIzle", "Grafik"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("frmFonIzle", "İşlem Özeti"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("frmFonIzle", "Tahmin Grafiği"))
+        
         self.label_2.setText(_translate("frmFonIzle", "Hareketli Ortalama Periyotları"))
         self.label.setText(_translate("frmFonIzle", "Tarih Aralığı"))
     
@@ -208,11 +224,59 @@ class Ui_frmFonIzle():
         if self.verticalLayoutTrend.count()>0 :
             self.verticalLayoutTrend.itemAt(0).widget().deleteLater()
         self.verticalLayoutTrend.addWidget(self.canvas1)
+        
+        """Tahmin Grafiği"""
+        
+        
+        self.fig2 = grafik_LinearRegression(fon , fondf)
+        self.canvas2 = FigureCanvas(self.fig2)
+        
+        if self.verticalLayoutTahmin.count()>0 :
+            self.verticalLayoutTahmin.itemAt(0).widget().deleteLater()
+        self.verticalLayoutTahmin.addWidget(self.canvas2)
+    
     
         now = datetime.now()
         self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + now.strftime("%H:%M:%S") + "    " + fon + " fonu analiz edildi.\n")
         
-    
+        """Kazanç şimdilik özet textine yazıyorum."""
+        SonTarih = fondf["Tarih"].max()
+        IlkTarih = fondf["Tarih"].min()
+        SonFiyat = float(fondf[fondf["Tarih"]==SonTarih]["Fiyat"])
+        IlkFiyat = float(fondf[fondf["Tarih"]==IlkTarih]["Fiyat"])
+        if IlkFiyat == 0 :
+            Artis = SonFiyat - IlkFiyat
+            Birden = SonFiyat
+            Yuzde = 100   
+        else:
+            Artis = SonFiyat - IlkFiyat
+            Birden = SonFiyat/IlkFiyat
+            Yuzde = Artis * 100 / IlkFiyat   
+        
+        
+        ozet = "\n\n"
+        if Artis>0:
+            ozet += "Yükseliş\n"
+        elif Artis<0:
+            ozet += "Düşüş\n"
+        
+        ozet += "İlk Fiyatı  =  " +  str("{:.5f}".format(IlkFiyat))  + "\nSon Fiyatı  =  " +  str("{:.5f}".format(SonFiyat)) + "\nFark  =  " +  str("{:.5f}".format(Artis))  + "\nBire Kaç Verdi  =  " +  str("{:.5f}".format(Birden))  + "\nYüzde Kar  =  " +  str("{:.5f}".format(Yuzde)) + "\n\n"
+            
+        self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + ozet)
+        
+        
+        """Tahmin"""
+        fondf = verihazirla(fondf)
+        if len(fondf)>0:
+            SonTarih = fondf["Tarih"].max()
+            fondf = fondf[fondf["Tarih"]==SonTarih]
+            x = fondf[["Fiyat", "ho_short", "ho_middle", "ho_long"]].head(1)
+            print(x)
+            y_pred = fon_LinearRegression(fon, x)
+            
+            self.txtOzet.setPlainText(   self.txtOzet.toPlainText() + "\nTahmin Edilen Ertesi Gün Fiyatı : " + str(y_pred)  + "\n\n")
+        
+        
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
