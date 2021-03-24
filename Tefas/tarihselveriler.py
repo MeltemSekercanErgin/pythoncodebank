@@ -118,9 +118,12 @@ def fonAnaliz(fon_kod, df, Baslangic, Bitis, HO1 = 30, HO2 = 50, HO3 = 200):
     
     
     #veri birleştirilirken sabit oluşturuldu. Bu onları ekrandan alınana göre tekrar hesaplıyor
-    tmpdf["ho_short"] = tmpdf["Fiyat"].rolling(window =HO1).mean()
-    tmpdf["ho_middle"] = tmpdf["Fiyat"].rolling(window =HO2).mean()
-    tmpdf["ho_long"] = tmpdf["Fiyat"].rolling(window =HO3).mean()
+    if HO1!=30 :
+        tmpdf["ho_short"] = tmpdf["Fiyat"].rolling(window =HO1).mean()
+    if HO2!=50 :
+        tmpdf["ho_middle"] = tmpdf["Fiyat"].rolling(window =HO2).mean()
+    if HO3!=200 :
+        tmpdf["ho_long"] = tmpdf["Fiyat"].rolling(window =HO3).mean()
     
     
     tmpdf["SELLs"] =  tmpdf["Fiyat"]<tmpdf["ho_short"] 

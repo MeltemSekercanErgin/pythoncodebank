@@ -110,7 +110,8 @@ class MDIWindow(QMainWindow):
             
         elif p.text() == "Kapat":
             
-            self.mdi.close()
+            self.close()
+            
             
         elif p.text() == "Formları Diz":
             

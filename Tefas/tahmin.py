@@ -17,7 +17,10 @@ import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 
+from tarihselveriler import hatayakala
+
 #veribirleştirme kısmında yapıldığından kullanılmayacak
+@hatayakala
 def verihazirla_ilk():
     
     df = pd.read_csv("TarihselVeriler_main.csv")
@@ -45,6 +48,7 @@ def verihazirla_ilk():
     df.to_csv("Tahmin.csv", index=False)
 
 #veribirleştirme kısmında yapıldığından kullanılmayacak
+@hatayakala
 def verihazirla_2():
     
     df = pd.read_csv("Tahmin.csv")
@@ -80,7 +84,8 @@ def verihazirla_2():
     tmpdf = tmpdf[tmpdf["ho_long"]>0]
     
     tmpdf.to_csv("Tahmin_h.csv", index=False)
-    
+
+@hatayakala
 def verihazirla(df):
     
     """Son fiyatı sıfır olanlar varsa sil"""
@@ -93,6 +98,7 @@ def verihazirla(df):
     
     return df
 
+@hatayakala
 def lr_model_egit():
     
     df = pd.read_csv("Tahmin_h.csv")
@@ -167,7 +173,7 @@ def lr_model_egit():
        
         plt.show()
        
-
+@hatayakala
 def ridge_model_egit():
     
     df = pd.read_csv("Tahmin_h.csv")
@@ -228,6 +234,7 @@ def ridge_model_egit():
         fondf.to_csv("tahminler\_ridge_" + fon + ".csv", index=False)
         
 
+@hatayakala
 def ann_model_egit():
     
     df = pd.read_csv("Tahmin_h.csv")
@@ -293,7 +300,8 @@ def ann_model_egit():
         print("Eğitim Skoru : " , model.score(x_train, y_train))
         print("Tahmin Skoru : " , model.score(x_test, y_test))
         fondf.to_csv("tahminler\_ann_" + fon + ".csv", index=False)
-        
+
+@hatayakala    
 def grafik_LinearRegression(fon, fondf):
     
     x = fondf[["Fiyat", "ho_short", "ho_middle", "ho_long"]]
@@ -312,7 +320,8 @@ def grafik_LinearRegression(fon, fondf):
     plt.xticks(rotation='vertical')
     
     return fig
-    
+
+@hatayakala
 def fon_LinearRegression(fon, x):
     """ x  için gönderilmesi gereken değerlerin örneği
     x = fdf[["Fiyat", "ho_short", "ho_middle", "ho_long"]]
