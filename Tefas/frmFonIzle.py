@@ -71,6 +71,15 @@ class Ui_frmFonIzle():
         self.verticalLayoutTahmin.setObjectName("verticalLayoutTahmin")
         self.tabWidget.addTab(self.tab_5, "")
         
+        self.tab_6 = QtWidgets.QWidget()
+        self.tab_6.setObjectName("tab_6")
+        self.verticalLayoutWidget3 = QtWidgets.QWidget(self.tab_6)
+        self.verticalLayoutWidget3.setGeometry(QtCore.QRect(0, 0, 1270, 505))
+        self.verticalLayoutWidget3.setObjectName("verticalLayoutWidget3")
+        self.verticalLayoutHaftalik = QtWidgets.QVBoxLayout(self.verticalLayoutWidget3)
+        self.verticalLayoutHaftalik.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayoutHaftalik.setObjectName("verticalLayoutHaftalik")
+        self.tabWidget.addTab(self.tab_6, "")
         
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
@@ -116,7 +125,7 @@ class Ui_frmFonIzle():
         self.txtHO3.setText("200")
         
         self.retranslateUi(frmFonIzle)
-        self.tabWidget.setCurrentIndex(4)
+        self.tabWidget.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(frmFonIzle)
         
         self.btnFonAnaliz.clicked.connect(self.fonAnaliz)
@@ -135,6 +144,7 @@ class Ui_frmFonIzle():
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("frmFonIzle", "Grafik"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("frmFonIzle", "İşlem Özeti"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("frmFonIzle", "Tahmin Grafiği"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("frmFonIzle", "Haftalık Değişim"))
         
         self.label_2.setText(_translate("frmFonIzle", "Hareketli Ortalama Periyotları"))
         self.label.setText(_translate("frmFonIzle", "Tarih Aralığı"))
@@ -234,6 +244,16 @@ class Ui_frmFonIzle():
         if self.verticalLayoutTahmin.count()>0 :
             self.verticalLayoutTahmin.itemAt(0).widget().deleteLater()
         self.verticalLayoutTahmin.addWidget(self.canvas2)
+    
+    
+        """Haftalık Değişim Grafiği"""
+        
+        self.fig3 = tveri.fonHaftalik(fon , fondf)
+        self.canvas3 = FigureCanvas(self.fig3)
+        
+        if self.verticalLayoutHaftalik.count()>0 :
+            self.verticalLayoutHaftalik.itemAt(0).widget().deleteLater()
+        self.verticalLayoutHaftalik.addWidget(self.canvas3)
     
     
         now = datetime.now()

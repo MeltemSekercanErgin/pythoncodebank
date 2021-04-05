@@ -200,5 +200,24 @@ def fonTrend(fon_kod, df):
     
     return fig1
     
-
+@hatayakala
+def fonHaftalik(fon_kod, df):
+    tmpdf = df.copy()
     
+    tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%Y.%m.%d")
+    
+    
+    tmpdf["Fiyat"]= tmpdf["Fiyat"].apply(lambda x: str(x).replace(",","."))
+    tmpdf["Fiyat"] = pd.to_numeric(tmpdf["Fiyat"], downcast="float")
+        
+    tmpdf = tmpdf.resample("W", on="Tarih",closed="left", label="left"        
+                      ).apply({ "Fiyat": lambda g: (g.iloc[-1] - g.iloc[0])/g.iloc[0]*100})
+    
+        
+    fig, ax = plt.subplots()
+    
+    graph = sns.lineplot(ax = ax,  x ="Tarih", y = "Fiyat", data=tmpdf, linewidth=.80)   # 'AES')
+    
+    graph.axhline(0)
+    return fig
+  
