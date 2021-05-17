@@ -204,6 +204,7 @@ def fonTrend(fon_kod, df):
 def fonHaftalik(fon_kod, df):
     tmpdf = df.copy()
     
+    
     tmpdf["Tarih"] = pd.to_datetime(tmpdf["Tarih"], format="%Y.%m.%d")
     
     
@@ -219,5 +220,6 @@ def fonHaftalik(fon_kod, df):
     graph = sns.lineplot(ax = ax,  x ="Tarih", y = "Fiyat", data=tmpdf, linewidth=.80)   # 'AES')
     
     graph.axhline(0)
+    
     return fig
   

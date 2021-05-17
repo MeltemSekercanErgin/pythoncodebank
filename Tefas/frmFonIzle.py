@@ -238,6 +238,7 @@ class Ui_frmFonIzle():
         """Tahmin Grafiği"""
         
         
+        
         self.fig2 = grafik_LinearRegression(fon , fondf)
         self.canvas2 = FigureCanvas(self.fig2)
         
