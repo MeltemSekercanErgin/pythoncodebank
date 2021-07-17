@@ -34,7 +34,7 @@ def veribirlestir():
 
     df = pd.read_csv("TarihselVeriler_main.csv")
     df["Tarih"] = pd.to_datetime(df["Tarih"], format="%Y.%m.%d")
-    df.dropna(inplace=True)
+    """df.dropna(inplace=True)"""
     
     SonTarih = df["Tarih"].max()
     
@@ -100,8 +100,11 @@ def veriYukle():
 
 
     df = pd.read_csv("TarihselVeriler_main.csv")
+    
     df["Tarih"] = pd.to_datetime(df["Tarih"], format="%Y.%m.%d")
-    df.dropna(inplace=True)
+    """df.dropna(inplace=True)"""
+    
+    
     return df
   
 @hatayakala            
